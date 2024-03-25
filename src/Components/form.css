@@ -1,0 +1,57 @@
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 1rem;
+  max-width: 340px;
+  min-width: 280px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 1rem;
+  background-color: #cfcfcf;
+}
+
+.warning {
+  color: rgb(236, 47, 47);
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-top: 0rem;
+}
+
+.success {
+  color: #3da536;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-top: 0rem;
+}
+
+form input {
+  padding: 0.2rem;
+  height: 24px;
+}
+
+form button {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  font-weight: 600;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  border: rgb(118, 118, 118);
+  border-radius: 15px;
+  cursor: pointer;
+  padding: 0.7rem;
+}
+
+form input {
+  border-radius: 15px;
+  padding: 0.5rem;
+}
+
+.btn-able:hover {
+  background-color: rgb(206, 217, 142);
+}
+
+.dark form {
+  background-color: #2b3035;
+}
