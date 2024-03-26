@@ -44,7 +44,7 @@ const Card = ({ name, username, id }) => {
         {/* Mostrar nombre, nombre de usuario e id */}
         <p>{name}</p>
         <p>User: {username}</p>
-        <p>Id: {id}</p>
+        {/* <p>Id: {id}</p> */}
       </Link>
       {/* Botón de favoritos */}
       <button
