@@ -1,64 +1,45 @@
-import React from "react";
 import { useState } from "react";
 import "./form.css";
 
 const Form = () => {
-  //Aqui deberan implementar el form completo con sus validaciones
-
   const [leadData, setLeadData] = useState({
-    name: { value: "", isOK: null },
-    email: { value: "", isOK: null },
+    name: { value: "", isValid: null },
+    email: { value: "", isValid: null },
   });
-  const [show, setShow] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  // Mensajes:
-  const errMessage = {
-    errName: "Debes ingresar un nombre mayor a 5 letras",
-    errEmail: "Debes ingresar un correo electronico válido",
-  };
-  const successMessage = `Gracias ${leadData.name.value}, pronto nos pondremos en contacto!`;
-
-  const handleNameData = (e) => {
-    // Validar NOMBRE con longitud mayor a 5 y sin espacio en blanco al iniciar
-
-    if (e.target.value.length > 5 && e.target.value.charAt(0) !== " ") {
-      setLeadData({
-        ...leadData,
-        name: { value: e.target.value, isOK: true },
-      });
-    } else {
-      setLeadData({
-        ...leadData,
-        name: { value: "", isOK: false },
-      });
-    }
+  const validateName = (name) => {
+    return name.length > 5 && name.trim() !== "";
   };
 
-  const handleEmailData = (e) => {
-    // Validar EMAIL válido con REGEX
+  const validateEmail = (email) => {
     const regex =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    return regex.test(email);
+  };
 
-    if (regex.test(e.target.value)) {
-      setLeadData({
-        ...leadData,
-        email: { value: e.target.value, isOK: true },
-      });
-    } else {
-      setLeadData({
-        ...leadData,
-        email: { value: "", isOK: false },
-      });
-    }
+  const handleNameChange = (e) => {
+    const name = e.target.value;
+    setLeadData({
+      ...leadData,
+      name: { value: name, isValid: validateName(name) },
+    });
+  };
+
+  const handleEmailChange = (e) => {
+    const email = e.target.value;
+    setLeadData({
+      ...leadData,
+      email: { value: email, isValid: validateEmail(email) },
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //console.log(leadData.email.isOK);
-    if (leadData.name.isOK === true && leadData.email.isOK === true) {
-      setShow(true);
+    if (leadData.name.isValid && leadData.email.isValid) {
+      setShowSuccess(true);
       console.log(
-        `LEAD RECIBIDO: \n Nombre: ${leadData.name.value} \n Email: ${leadData.email.value} \n ========================`
+        `LEAD RECIBIDO:\nNombre: ${leadData.name.value}\nEmail: ${leadData.email.value}`
       );
     } else {
       console.log("Hay errores en el formulario");
@@ -66,49 +47,44 @@ const Form = () => {
   };
 
   return (
-    <>
-      <div className="contactForm">
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Nombre completo"
-            onChange={handleNameData}
-          />
-          {leadData.name.isOK === null ? (
-            <></>
-          ) : leadData.name.isOK ? (
-            <></>
-          ) : (
-            <p className="warning">{errMessage.errName}</p>
-          )}
+    <div className="contactForm">
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="name"
+          placeholder="Nombre completo"
+          value={leadData.name.value}
+          onChange={handleNameChange}
+        />
+        {!leadData.name.isValid && leadData.name.isValid !== null && (
+          <p className="warning">Debes ingresar un nombre mayor a 5 letras</p>
+        )}
 
-          <input
-            type="text"
-            name="email"
-            placeholder="Tu e-mail"
-            onChange={handleEmailData}
-          />
-          {leadData.email.isOK === null ? (
-            <></>
-          ) : leadData.email.isOK ? (
-            <></>
-          ) : (
-            <p className="warning">{errMessage.errEmail}</p>
-          )}
+        <input
+          type="text"
+          name="email"
+          placeholder="Tu e-mail"
+          value={leadData.email.value}
+          onChange={handleEmailChange}
+        />
+        {!leadData.email.isValid && leadData.email.isValid !== null && (
+          <p className="warning">Debes ingresar un correo electrónico válido</p>
+        )}
 
-          {leadData.name.isOK === null || leadData.email.isOK === null ? (
-            <button disabled> Enviar </button>
-          ) : (
-            <button type="submit" className="btn-able">
-              {" "}
-              Enviar{" "}
-            </button>
-          )}
-          {show && <p className="success">{successMessage}</p>}
-        </form>
-      </div>
-    </>
+        <button
+          type="submit"
+          disabled={!leadData.name.isValid || !leadData.email.isValid}
+        >
+          Enviar
+        </button>
+
+        {showSuccess && (
+          <p className="success">
+            Gracias {leadData.name.value}, pronto nos pondremos en contacto!
+          </p>
+        )}
+      </form>
+    </div>
   );
 };
 

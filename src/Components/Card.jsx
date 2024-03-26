@@ -1,16 +1,20 @@
 import { useContext, useState } from "react";
-import { ContextGlobal } from "../Components/utils/global.context";
 import { Link } from "react-router-dom";
+import { ContextGlobal } from "../Components/utils/global.context";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 
 const Card = ({ name, username, id }) => {
+  // Contexto para gestionar favoritos
   const { favState, favDispatch } = useContext(ContextGlobal);
+
+  // Estado para rastrear la carga de la imagen
   const [imageLoaded, setImageLoaded] = useState(false);
 
+  // Comprobar si la tarjeta actual está en favoritos
   const isFav = favState.some((fav) => fav.id === id);
 
-  const onFavClick = (e) => {
-    // Aqui iria la logica para agregar la Card en el localStorage
+  // Manejar el clic del botón de favoritos
+  const handleFavClick = (e) => {
     e.stopPropagation();
     if (isFav) {
       favDispatch({ type: "DELETE_FAV", payload: id });
@@ -19,32 +23,35 @@ const Card = ({ name, username, id }) => {
     }
   };
 
+  // Manejar el evento de carga de la imagen
   const handleImageLoad = () => {
     setImageLoaded(true);
   };
 
   return (
     <div className="card-wraper">
+      {/* Enlace a la página de detalles */}
       <Link className="card" to={`/detail/${id}`}>
+        {/* Mostrar esqueleto hasta que se cargue la imagen */}
         {!imageLoaded && <div className="skeleton_img"></div>}
+        {/* Imagen real */}
         <img
           src="./images/doctor.jpg"
           alt="doctor"
           onLoad={handleImageLoad}
           style={{ display: imageLoaded ? "block" : "none" }}
         />
-        {/* En cada card deberan mostrar en name - username y el id */}
+        {/* Mostrar nombre, nombre de usuario e id */}
         <p>{name}</p>
         <p>User: {username}</p>
         <p>Id: {id}</p>
-        {/* No debes olvidar que la Card a su vez servira como Link hacia la pagina de detalle */}
-
-        {/* Ademas deberan integrar la logica para guardar cada Card en el localStorage */}
       </Link>
+      {/* Botón de favoritos */}
       <button
-        onClick={onFavClick}
+        onClick={handleFavClick}
         className={`favButton ${isFav ? "favorited" : ""}`}
       >
+        {/* Mostrar corazón relleno si está en favoritos, corazón contorneado de lo contrario */}
         {isFav ? <BsHeartFill /> : <BsHeart />}
       </button>
     </div>

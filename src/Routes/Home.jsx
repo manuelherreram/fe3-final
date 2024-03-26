@@ -3,29 +3,25 @@ import { ContextGlobal } from "../Components/utils/global.context";
 import Card from "../Components/Card";
 import CardSkeleton from "../Components/CardSkeleton";
 
-//Este componente debera ser estilado como "dark" o "light" dependiendo del theme del Context
-
 const Home = () => {
-  const { dentistsState } = useContext(ContextGlobal);
+  const { dentistsState, theme } = useContext(ContextGlobal);
+
+  const renderCards = () => {
+    if (dentistsState.dentistsList.length === 0) {
+      return [...Array(10)].map((_, index) => <CardSkeleton key={index} />);
+    } else {
+      return dentistsState.dentistsList.map((dentist) => (
+        <Card key={dentist.id} {...dentist} />
+      ));
+    }
+  };
 
   return (
-    <>
+    <div className={`home-container ${theme}`}>
       <h1>Los mejores especialistas</h1>
       <p>tan cerca como a un clic</p>
-      <div className="card-grid">
-        {dentistsState.dentistsList.length === 0 ? (
-          <>
-            {[...Array(10)].map((_, index) => (
-              <CardSkeleton key={index} />
-            ))}
-          </>
-        ) : (
-          dentistsState.dentistsList.map((dentist) => (
-            <Card key={dentist.id} {...dentist} />
-          ))
-        )}
-      </div>
-    </>
+      <div className="card-grid">{renderCards()}</div>
+    </div>
   );
 };
 
