@@ -19,6 +19,7 @@ const Card = ({ name, username, id }) => {
     if (isFav) {
       favDispatch({ type: "DELETE_FAV", payload: id });
     } else {
+      alert('Dentista agregado a favoritos correctamente')
       favDispatch({ type: "ADD_FAV", payload: { name, username, id } });
     }
   };
@@ -44,7 +45,6 @@ const Card = ({ name, username, id }) => {
         {/* Mostrar nombre, nombre de usuario e id */}
         <p>{name}</p>
         <p>User: {username}</p>
-        {/* <p>Id: {id}</p> */}
       </Link>
       {/* Botón de favoritos */}
       <button
